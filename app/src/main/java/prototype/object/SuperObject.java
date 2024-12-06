@@ -10,6 +10,9 @@ import java.util.Random;
 
 public class SuperObject {
     public BufferedImage image;
+    public BufferedImage image2;
+    public BufferedImage image3;
+
     public String name;
     public boolean collision = false;
     public int worldX, worldY;
