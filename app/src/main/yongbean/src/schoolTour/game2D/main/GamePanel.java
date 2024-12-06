@@ -1,5 +1,7 @@
 package schoolTour.game2D.main;
 
+import schoolTour.game2D.entity.Entity;
+import schoolTour.game2D.entity.NPC_OldMan;
 import schoolTour.game2D.entity.Player;
 import schoolTour.game2D.object.SuperObject;
 import schoolTour.game2D.tile.TileManager;
@@ -51,6 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyHandler);
     // superObject
     public SuperObject[] superObject = new SuperObject[10];
+    // NPC
+    public Entity[] npc = new Entity[10];
 
             // GAME STATE
     public int gameState;
@@ -67,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         assetSetter.setObject();
+        assetSetter.setNPC();
         playMusic(0);
         stopMusic();
         gameState = playState;

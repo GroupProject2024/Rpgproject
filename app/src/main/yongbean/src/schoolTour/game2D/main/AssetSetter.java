@@ -1,9 +1,6 @@
 package schoolTour.game2D.main;
 
-import schoolTour.game2D.object.OBJ_Boots;
-import schoolTour.game2D.object.OBJ_Chest;
-import schoolTour.game2D.object.OBJ_Door;
-import schoolTour.game2D.object.OBJ_Key;
+import schoolTour.game2D.entity.NPC_OldMan;
 
 public class AssetSetter {
     GamePanel gamePanel;
@@ -13,7 +10,6 @@ public class AssetSetter {
     }
 
     public void setObject() {
-
 
             // for treasure hunting game -> demo
 
@@ -48,5 +44,11 @@ public class AssetSetter {
 //        gamePanel.superObject[7] = new OBJ_Boots(gamePanel);
 //        gamePanel.superObject[7].worldX = 37 * gamePanel.tileSize;
 //        gamePanel.superObject[7].worldY = 41 * gamePanel.tileSize;
+    }
+
+    public void setNPC() {
+         gamePanel.npc[0] = new NPC_OldMan(gamePanel);
+         gamePanel.npc[0].worldX = gamePanel.tileSize*21;
+         gamePanel.npc[0].worldY = gamePanel.tileSize*21;
     }
 }

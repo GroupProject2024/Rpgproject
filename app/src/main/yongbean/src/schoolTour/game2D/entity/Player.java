@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Player extends Entity {
-    GamePanel gamePanel;
     KeyHandler keyHandler;
 
     public final int screenX;
@@ -23,7 +22,7 @@ public class Player extends Entity {
     int pixelCounter = 0;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-        this.gamePanel = gamePanel;
+        super(gamePanel);
         this.keyHandler = keyHandler;
 
         screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
@@ -64,28 +63,14 @@ public class Player extends Entity {
 //        }catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        up1 = setup("boy_up_1");
-        up2 = setup("boy_up_2");
-        down1 = setup("boy_down_1");
-        down2 = setup("boy_down_2");
-        left1 = setup("boy_left_1");
-        left2 = setup("boy_left_2");
-        right1 = setup("boy_right_1");
-        right2 = setup("boy_right_2");
-    }
-
-    public BufferedImage setup(String imageName){
-        UtilityTool utilityTool = new UtilityTool();
-        BufferedImage image = null;
-
-        try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/walkingSprites/" + imageName + ".png")));
-            image = utilityTool.scaleImage(image, gamePanel.tileSize, gamePanel.tileSize);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
+        up1 = setup("player/walkingSprites/boy_up_1");
+        up2 = setup("player/walkingSprites/boy_up_2");
+        down1 = setup("player/walkingSprites/boy_down_1");
+        down2 = setup("player/walkingSprites/boy_down_2");
+        left1 = setup("player/walkingSprites/boy_left_1");
+        left2 = setup("player/walkingSprites/boy_left_2");
+        right1 = setup("player/walkingSprites/boy_right_1");
+        right2 = setup("player/walkingSprites/boy_right_2");
     }
 
     public void update() {
