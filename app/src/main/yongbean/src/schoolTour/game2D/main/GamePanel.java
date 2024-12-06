@@ -1,6 +1,7 @@
 package schoolTour.game2D.main;
 
 import schoolTour.game2D.entity.Player;
+import schoolTour.game2D.object.SuperObject;
 import schoolTour.game2D.tile.TileManager;
 
 import javax.swing.*;
@@ -22,26 +23,39 @@ public class GamePanel extends JPanel implements Runnable {
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
 
 //    FPS
     int fps = 60;
 
-    // to start the loop of the game
-    Thread gameThread;
-
-    // keyboard handling
-    KeyHandler keyHandler = new KeyHandler();
-
-    // player
-    public Player player = new Player(this, keyHandler);
+            // SYSTEM
 
     // tileManager class to use
     TileManager tileManager = new TileManager(this);
-
+    // keyboard handling
+    KeyHandler keyHandler = new KeyHandler(this);
+    // sound class
+    Sound music = new Sound();
+    Sound se = new Sound();
     // class to check the collision in gamePanel
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+    // AssetSetting
+    public AssetSetter assetSetter = new AssetSetter(this);
+    // UI
+    public UI ui = new UI(this);
+    // to start the loop of the game
+    Thread gameThread;
+
+            //ENTITY AND OBJECT
+
+    // player
+    public Player player = new Player(this, keyHandler);
+    // superObject
+    public SuperObject[] superObject = new SuperObject[10];
+
+            // GAME STATE
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -49,6 +63,13 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+    }
+
+    public void setupGame() {
+        assetSetter.setObject();
+        playMusic(0);
+        stopMusic();
+        gameState = playState;
     }
 
     public void startGameThread() {
@@ -117,7 +138,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
+        if(gameState == playState) {
+            player.update();
+        }
+        if(gameState == pauseState) {
+            //
+        }
     }
 
     public void paintComponent(Graphics g) {    // layers as line moves down
@@ -125,10 +151,56 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        // DEBUG
+        long drawStart = 0;
+        if(keyHandler.checkDebugTime) drawStart = System.nanoTime();
+
+        // tile
         tileManager.draw(g2d);
 
+        // object (enhanced for loop)
+        for (SuperObject object : superObject) {
+            if (object != null) {
+                object.draw(g2d, this);
+            }
+        }
+//        for(int i = 0; i < superObject.length; i++) {
+//            if(superObject[i] != null) {
+//                superObject[i].draw(g2d, this);
+//            }
+//        }
+
+        // player
         player.draw(g2d);
 
+        ui.draw(g2d);
+
+        // DEBUG
+        if(keyHandler.checkDebugTime) {
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+            g2d.setColor(Color.WHITE);
+            g2d.drawString("Draw time : " + passed, 10, 400);
+            System.out.println("Draw time : " + passed);
+        }
+
         g2d.dispose();
+    }
+
+    // background music
+    public void playMusic(int i) {
+        music.setFile(i);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic() {
+        music.stop();
+    }
+
+    // sound effect
+    public void playSE(int i) {
+        se.setFile(i);
+        se.play();
     }
 }
