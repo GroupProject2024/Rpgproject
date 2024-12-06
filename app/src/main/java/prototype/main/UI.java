@@ -2,6 +2,8 @@ package prototype.main;
 
 import com.sun.tools.jconsole.JConsolePlugin;
 import prototype.object.OBJ_Key;
+import prototype.object.OBJ_heart;
+import prototype.object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,7 +14,7 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     Font arial_40;
-    BufferedImage keyImage;
+    BufferedImage keyImage, heart_full, heart_half, heart_blank;
     Font maruMonica;
     public boolean messageOn = false;
     public String message = "";
@@ -22,6 +24,7 @@ public class UI {
 
     public UI(GamePanel gp){
         this.gp =  gp;
+        //FOnt
         InputStream is = getClass().getResourceAsStream("/font/x12y16pxMaruMonica.ttf");
         try {
             maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -34,6 +37,10 @@ public class UI {
         arial_40 = new Font("Cambria", Font.PLAIN, 40);
         OBJ_Key key = new OBJ_Key(gp);
         keyImage = key.image;
+        SuperObject heart = new OBJ_heart(gp);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
     }
     public void showMessage(String text){
         message = text;
@@ -49,13 +56,19 @@ public class UI {
         }
         //Play State
         if (gp.gameState == gp.playState){
-        //Pause State
+            drawPlayerLife();
         }
+        //Pause State
+
         if (gp.gameState == gp.pauseState){
             drawPauseScreen();
+            drawPlayerLife();
+
         }
         if (gp.gameState == gp.dialogueState){
             drawDialogueScreen();
+            drawPlayerLife();
+
 
         }
     }
@@ -101,6 +114,30 @@ public class UI {
         g2.drawString(text, x, y);
         if (commandNum == 2){
             g2.drawString(">", x-gp.tileSize, y);
+        }
+    }
+
+    public void drawPlayerLife(){
+        int x = gp.tileSize/2;
+        int y = gp.tileSize/2;
+        int i = 0;
+        while (i<gp.player.maxLife/2){
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += gp.tileSize;
+        }
+        //reset current life
+        x = gp.tileSize/2;
+        y = gp.tileSize/2;
+        i = 0;
+        while (i < gp.player.life){
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if (i<gp.player.life){
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += gp.tileSize;
         }
     }
 

@@ -87,6 +87,12 @@ public class Player extends Entity{
             ///Check NPC collision
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
+
+            //CHECK event
+            gp.eHandler.checkEvent();
+            gp.keyH.EnterPressed = false;
+
+
             //when pass not solid area
             if (collisionOn == false){
 
@@ -128,7 +134,6 @@ public class Player extends Entity{
                 gp.npc[i].speak();
             }
         }
-        gp.keyH.EnterPressed = false;
     }
     public void draw(Graphics2D g2){
         //describe walking
