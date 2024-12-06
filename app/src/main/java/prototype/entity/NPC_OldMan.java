@@ -19,7 +19,7 @@ public class NPC_OldMan extends Entity {
     }
     public void setDialogue(){
         dialogue[0] = "Hello, lad.";
-        dialogue[1] = "So, You narrived HGU";
+        dialogue[1] = "So, You arrived HGU";
         dialogue[2] = "You are student now ";
         dialogue[3] = "Find Bag!";
 
