@@ -11,13 +11,15 @@ public class Main {
         window.setResizable(false);
         window.setTitle("2D Adventure");
 
-        schoolTour.game2D.main.GamePanel gamePanel = new schoolTour.game2D.main.GamePanel();
+        GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
 
         window.pack();
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        gamePanel.setupGame();
 
         gamePanel.startGameThread();
     }
