@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     // tileManager class to use
     TileManager tileManager = new TileManager(this);
     // keyboard handling
-    KeyHandler keyHandler = new KeyHandler(this);
+    public KeyHandler keyHandler = new KeyHandler(this);
     // sound class
     Sound music = new Sound();
     Sound se = new Sound();
@@ -58,8 +58,10 @@ public class GamePanel extends JPanel implements Runnable {
 
             // GAME STATE
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogueState = 3;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -72,9 +74,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         assetSetter.setObject();
         assetSetter.setNPC();
-        playMusic(0);
-        stopMusic();
-        gameState = playState;
+//        playMusic(0);
+//        stopMusic();
+        gameState = titleState;
     }
 
     public void startGameThread() {
@@ -83,33 +85,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     @Override
-//    public void run() { // creates the game loop w
-//
-//        double drawInterval = (double) 1000000000 /fps;   // 0.01666 sec
-//        double nextDrawTime = System.nanoTime() + drawInterval;
-//
-//        while (gameThread.isAlive()) {
-//
-//            update();   // 1. Update : update info such as character position
-//            repaint();  // 2. Draw : draw the updated info ito screen
-//
-//            try {
-//                double remainingTime = nextDrawTime - System.nanoTime();
-//                remainingTime = remainingTime / 1000000;
-//
-//                if(remainingTime < 0) {
-//                    remainingTime = 0;
-//                }
-//
-//                Thread.sleep((long) remainingTime);
-//
-//                nextDrawTime += drawInterval;
-//
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
     public void run() { // delta/accumulative method
 
         double drawInterval = (double) 1000000000 /fps;   // 0.01666 sec
@@ -144,7 +119,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         if(gameState == playState) {
+            // player
             player.update();
+            // npc
+            for (Entity entity : npc) {
+                if (entity != null) {
+                    entity.update();
+                }
+            }
         }
         if(gameState == pauseState) {
             //
@@ -160,25 +142,34 @@ public class GamePanel extends JPanel implements Runnable {
         long drawStart = 0;
         if(keyHandler.checkDebugTime) drawStart = System.nanoTime();
 
-        // tile
-        tileManager.draw(g2d);
-
-        // object (enhanced for loop)
-        for (SuperObject object : superObject) {
-            if (object != null) {
-                object.draw(g2d, this);
-            }
+        // TITLE SCREEN
+        if(gameState == titleState) {
+            ui.draw(g2d);
         }
-//        for(int i = 0; i < superObject.length; i++) {
-//            if(superObject[i] != null) {
-//                superObject[i].draw(g2d, this);
-//            }
-//        }
+        // others
+        else {
+            // tile
+            tileManager.draw(g2d);
 
-        // player
-        player.draw(g2d);
+            // object (enhanced for loop)
+            for (SuperObject object : superObject) {
+                if (object != null) {
+                    object.draw(g2d, this);
+                }
+            }
 
-        ui.draw(g2d);
+            // NPC
+            for (Entity entity : npc) {
+                if (entity != null) {
+                    entity.draw(g2d);
+                }
+            }
+
+            // player
+            player.draw(g2d);
+
+            ui.draw(g2d);
+        }
 
         // DEBUG
         if(keyHandler.checkDebugTime) {
