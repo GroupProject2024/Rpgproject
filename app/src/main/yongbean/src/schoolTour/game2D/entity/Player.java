@@ -74,7 +74,7 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (!moving) {
+//        if (!moving) {
             if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
                 if (keyHandler.upPressed) {
                     direction = "up";
@@ -86,7 +86,7 @@ public class Player extends Entity {
                     direction = "right";
                 }
 
-                moving = true;
+//                moving = true;
 
                 // CHECK TILE COLLISION
                 collisionOn = false;
@@ -95,33 +95,29 @@ public class Player extends Entity {
                 // CHECK OBJECT COLLISION
                 int objectIndex = gamePanel.collisionChecker.checkObject(this, true);
                 pickUpObject(objectIndex);
-            } else {
-                standCounter++;
 
-                if (standCounter > 20) {
-                    spriteNum = 1;
-                    standCounter = 0;
-                }
-            }
-        }
-        if (moving) {
+                // CHECK NPC COLLISION
+                int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
+                interactNPC(npcIndex);
+
+//            } else {
+//                standCounter++;
+
+//                if (standCounter > 20) {
+//                    spriteNum = 1;
+//                    standCounter = 0;
+//                }
+//            }
+//        }
+//        if (moving) {
             // IF COLLISION == FALSE, PLAYER CAN MOVE
             if (!collisionOn) {
                 switch (direction) {
-                    case "up":
-                        worldY -= speed;
-                        break;
-                    case "down":
-                        worldY += speed;
-                        break;
-                    case "left":
-                        worldX -= speed;
-                        break;
-                    case "right":
-                        worldX += speed;
-                        break;
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed; break;
                 }
-
             }
 
             spriteCounter++;
@@ -133,51 +129,30 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
-            pixelCounter += speed;
-
-            if(pixelCounter >= 48) {
-                moving = false;
-                pixelCounter = 0;
-            }
+//            pixelCounter += speed;
+//
+//            if(pixelCounter >= 48) {
+//                moving = false;
+//                pixelCounter = 0;
+//            }
         }
     }
 
     public void pickUpObject(int i) {
          if(i != 999) {
 
-
-             // for treasure hunting demo -> beginning
-
-//             String objectName = gamePanel.superObject[i].name;
-//
-//             switch (objectName) {
-//                 case "Key":
-//                     gamePanel.playSE(1);
-//                     hasKey++;
-//                     gamePanel.superObject[i] = null;
-//                     gamePanel.ui.showMessage("You Got a Key!");
-//                     break;
-//                 case "Door":
-//                     if(hasKey > 0) {
-//                         gamePanel.playSE(3 );
-//                         gamePanel.superObject[i] = null;
-//                         hasKey--;
-//                         gamePanel.ui.showMessage("You Opened the Door!");
-//                     }
-//                     break;
-//                 case "Boots":
-//                     gamePanel.playSE(2);
-//                     speed += 2;
-//                     gamePanel.superObject[i] = null;
-//                     gamePanel.ui.showMessage("Speed Up!");
-//                     break;
-//                 case "Chest":
-//                     gamePanel.ui.gameFinished = true;
-//                     gamePanel.stopMusic();
-//                     gamePanel.playSE(4);
-//                     break;
-//             }
          }
+    }
+
+    public void interactNPC(int i) {
+
+        if(i != 999) {
+            if(gamePanel.keyHandler.enterPressed) {
+                gamePanel.gameState = gamePanel.dialogueState;
+                gamePanel.npc[i].speak();
+            }
+        }
+        gamePanel.keyHandler.enterPressed = false;
     }
 
     public void draw(Graphics2D g2d) {
