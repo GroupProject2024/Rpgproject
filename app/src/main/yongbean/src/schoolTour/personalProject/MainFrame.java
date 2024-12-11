@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
             remove(currentPanel);
         }
 
-        // 새로운 GamePanel 생성
+        // 새로운 main.GamePanel 생성
         currentPanel = new GamePanel(this, mapName);
         add(currentPanel); // 새 패널 추가
 

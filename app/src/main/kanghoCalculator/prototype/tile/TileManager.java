@@ -83,6 +83,7 @@ public class TileManager {
         }
 
     }
+
     public void loadMap(String filePath){
         //load txtfile from res/map/dormitory.txt
         try {
@@ -93,7 +94,7 @@ public class TileManager {
             int row = 0;
             while (col < gp.maxWorldCol && row < gp.maxWorldRow){
                 String line = br.readLine(); // use bufferedReader to read line 0 0 0 0 0
-                while (col < gp.maxWorldCol){
+//                while (col < gp.maxWorldCol){
                     //from bufferedReader, one by one without space
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);

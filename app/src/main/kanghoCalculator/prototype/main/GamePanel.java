@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);//when you use Double Buffer VG more efficient
         this.addKeyListener(keyH);
-        this.setFocusable(true);//GamePanel can be "focused" to receive key input
+        this.setFocusable(true);//main.GamePanel can be "focused" to receive key input
     }
 
     public void setUpGame() {
@@ -189,7 +189,7 @@ public class GamePanel extends JPanel implements Runnable{
             ui.draw(g2);
 
         }
-        //Tile
+        //tile.Tile
 
 
 
