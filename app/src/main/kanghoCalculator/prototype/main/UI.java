@@ -1,9 +1,8 @@
 package prototype.main;
 
-import com.sun.tools.jconsole.JConsolePlugin;
+import prototype.entity.Entity;
 import prototype.object.OBJ_Key;
 import prototype.object.OBJ_heart;
-import prototype.object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,7 +36,7 @@ public class UI {
         arial_40 = new Font("Cambria", Font.PLAIN, 40);
         OBJ_Key key = new OBJ_Key(gp);
         keyImage = key.image;
-        SuperObject heart = new OBJ_heart(gp);
+        Entity heart = new OBJ_heart(gp);
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_blank = heart.image3;
@@ -61,13 +60,15 @@ public class UI {
         //Pause State
 
         if (gp.gameState == gp.pauseState){
-            drawPauseScreen();
             drawPlayerLife();
+            drawPauseScreen();
+
 
         }
         if (gp.gameState == gp.dialogueState){
-            drawDialogueScreen();
             drawPlayerLife();
+            drawDialogueScreen();
+
 
 
         }

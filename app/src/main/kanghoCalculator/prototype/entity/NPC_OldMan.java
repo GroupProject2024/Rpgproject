@@ -18,10 +18,10 @@ public class NPC_OldMan extends Entity {
         getImage();
     }
     public void setDialogue(){
-        dialogue[0] = "Hello, lad.";
-        dialogue[1] = "So, You arrived HGU";
-        dialogue[2] = "You are student now ";
-        dialogue[3] = "Find Bag!";
+        dialogue[0] = "Hello, Student. I am a professor OldMan.";
+        dialogue[1] = "Now, you are a HGU student";
+        dialogue[2] = "You should graduate this school!";
+        dialogue[3] = "Find Bag and graduate!";
 
 
     }

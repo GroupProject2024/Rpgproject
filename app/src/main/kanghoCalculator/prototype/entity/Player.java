@@ -66,8 +66,8 @@ public class Player extends Entity{
         }
         return image;
     }
-    public void update(){
-        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true ||keyH.rightPressed == true) {// when key pushed
+    public void update() {
+        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true || keyH.EnterPressed == true) {// when key pushed
             //location information update
             if (keyH.upPressed == true) {
                 direction = "up";
@@ -82,21 +82,22 @@ public class Player extends Entity{
             collisionOn = false;
             gp.cChecker.checkTile(this);
             //check object Collision
-            int ObjIndex =  gp.cChecker.checkObject(this, true);
+            int ObjIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(ObjIndex);
             ///Check NPC collision
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
-
+            //Check Monster Collision
+            int MonsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             //CHECK event
+            contactMonster(MonsterIndex);
             gp.eHandler.checkEvent();
-            gp.keyH.EnterPressed = false;
 
 
             //when pass not solid area
-            if (collisionOn == false){
+            if (collisionOn == false && keyH.EnterPressed == false) {
 
-                switch (direction){
+                switch (direction) {
                     case "up":
                         worldY -= speed;
                         break;
@@ -111,6 +112,8 @@ public class Player extends Entity{
                         break;
                 }
             }
+            gp.keyH.EnterPressed = false;
+
             spriteCounter++;
             if (spriteCounter > 10) {
                 if (spriteNum == 1) {
@@ -121,10 +124,26 @@ public class Player extends Entity{
                 spriteCounter = 0;
             }
         }
+        //this needs to be outside of key if statement
+        if (invincible == true) {
+            invincibleCounter++;
+            if (invincibleCounter > 120) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
     public void pickUpObject(int i) {
         if (i != 999) {
 //
+        }
+    }
+    public void contactMonster(int i){
+        if (i != 999){
+            if (invincible == false){
+                life -=1;
+                invincible = true;
+            }
         }
     }
     public void interactNPC(int i){
@@ -172,6 +191,12 @@ public class Player extends Entity{
                 }
                 break;
         }
-        g2.drawImage(image, screenX, screenY, null);
+        if (invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+            g2.drawImage(image, screenX, screenY, null);
+        //reset alpha
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
     }
 }

@@ -18,7 +18,6 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         int code = e.getKeyCode();
         if (gp.gameState == gp.titleState) {
             if (code == KeyEvent.VK_UP) {
@@ -79,10 +78,8 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.playState;
         }
     }
-
-
-
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
