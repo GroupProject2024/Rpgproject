@@ -14,19 +14,27 @@ public class Entity {
     public int speed;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction;
+    public String direction = "down";
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX, solidAreaDefaultY;
-
+    public int type = 0;
     public boolean collisionOn = false;
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
     public int actionLockCounter = 0;
     public String dialogue[] = new String[20];
     public int dialogueindex = 0;
     public int maxLife = 6;
     public int life = 6;
+    public BufferedImage image;
+    public BufferedImage image2;
+    public BufferedImage image3;
+
+    public String name;
+    public boolean collision = false;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -73,7 +81,15 @@ public class Entity {
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+        if (contactPlayer == true && this.type == 2){
+            if (gp.player.invincible == false) {
+                gp.player.life -= 1;
+                gp.player.invincible = true;
+            }
+        }
         //when pass not solid area
         if (collisionOn == false){
 
